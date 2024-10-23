@@ -88,22 +88,66 @@ public class BinaryTree {
         postOrderTraverse(root);
     }
 
-    private int depth(TreeNode root, int val, int depth){
+    private int depth(TreeNode root, int val){
         if(root == null) return -1;
 
-        if(root.data == val) return depth;
+        if(root.data == val) return 0;
 
         if(val < root.data)
-            return 1 + depth(root.leftNode, val, depth);
+            return 1 + depth(root.leftNode, val);
         
-        return 1+depth(root.rightNode, val, depth);
+        return 1+depth(root.rightNode, val);
     }
     
     public int depth(int val){
-        return depth(root, val, 0);
+        return depth(root, val);
     }
 
-    private int height(TreeNode root, int val, int height){
-        
+    private int heightOfTree(TreeNode root){
+        if(root == null) return 0;
+
+        if(root.leftNode == null && root.rightNode == null) return 0;
+
+        return 1 + Math.max(heightOfTree(root.leftNode), heightOfTree(root.rightNode)); 
+    }
+
+    private int heightOfNode(TreeNode root, int val){
+        if(root == null) return -1;
+
+        if(root.data == val) return heightOfTree(root);
+
+        if(val <= root.data){
+            return heightOfNode(root.leftNode, val);
+        }
+        return heightOfNode(root.rightNode, val);
+    }
+
+    public int height(int val){
+        return heightOfNode(root, val);
+    }
+
+    private int getMinimum (TreeNode root){
+        if(root == null) return -1;
+
+        if(root.leftNode == null) return root.data;
+
+        return getMinimum(root.leftNode);
+    }
+
+    public int getMinimum(){
+        return getMinimum(root);
+    }
+
+    private boolean isEqual(TreeNode r1, TreeNode r2){
+        if(r1 == null && r2 == null) return true;
+        if(r1 == null) return false;
+        if(r2 == null) return false;
+
+        if(r1.data != r2.data) return false;
+        return isEqual(r1.leftNode, r2.leftNode) && isEqual(r1.rightNode , r2.rightNode);
+    }
+
+    public boolean isEqual(BinaryTree tree){
+        return isEqual(root, tree.root);
     }
 }
