@@ -1,3 +1,5 @@
+import java.util.*;
+
 class TreeNode {
     int data;
     TreeNode leftNode;
@@ -165,5 +167,38 @@ public class BinaryTree {
 
     public void nodeAtkDistance(int k){
         nodeAtkDistance(root, k);
+    }
+
+    public String levelOrderTraversal(){
+        List<List<Integer>> list = new ArrayList<>();
+        Queue<TreeNode> q = new ArrayDeque<>();
+        q.offer(root);
+
+        int lastNum = root.data;
+        int row = -1;
+
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            if(node.data <= lastNum){
+                List<Integer> currList = new ArrayList<>();
+                currList.add(node.data);
+                list.add(currList);
+                row++;
+            }else
+                list.get(row).add(node.data);
+            
+            lastNum = node.data;
+
+            if(node.leftNode != null){
+                q.offer(node.leftNode);
+            }
+
+            if(node.rightNode != null){
+                q.offer(node.rightNode);
+            }
+        }
+        return list.toString();   
+
+        // You can also use size of queue at a time to poll all the nodes in queue at a time, and offer back the sub-nodes of all those nodes
     }
 }
