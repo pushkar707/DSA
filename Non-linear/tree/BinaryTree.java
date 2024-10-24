@@ -150,4 +150,20 @@ public class BinaryTree {
     public boolean isEqual(BinaryTree tree){
         return isEqual(root, tree.root);
     }
+
+    private void nodeAtkDistance(TreeNode root, int k){
+        if(root == null || k < 0) return;
+
+        if(k == 0){
+            System.out.println(root.data);
+            return;
+        }
+
+        nodeAtkDistance(root.leftNode, k-1);
+        nodeAtkDistance(root.rightNode, k-1);
+    }
+
+    public void nodeAtkDistance(int k){
+        nodeAtkDistance(root, k);
+    }
 }
