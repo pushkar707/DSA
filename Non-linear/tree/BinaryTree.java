@@ -52,6 +52,7 @@ public class BinaryTree {
     }
 
     private void preOrderTraverse(TreeNode root){
+        // ROOT -> LEFT SIDE -> RIGHT SIDE
         if(root == null)
             return;
         
@@ -65,6 +66,7 @@ public class BinaryTree {
     }
 
     private void inOrderTraverse(TreeNode root){
+        // LEFT -> ROOT -> RIGHT (Starts from bottommost left node)
         if(root == null)
             return;
         
@@ -78,6 +80,7 @@ public class BinaryTree {
     }
 
     private void postOrderTraverse(TreeNode root){
+        // LEFT -> RIGHT -> ROOT ()
         if(root == null)
             return;
         
@@ -167,6 +170,42 @@ public class BinaryTree {
 
     public void nodeAtkDistance(int k){
         nodeAtkDistance(root, k);
+    }
+
+    public List<Integer> morrsiPreOrderTraversal(){
+        // We have two variables c and pred(predacessor)
+        // Before c goes to left node, we send pred there and make a link from from rightmost node from c.left to c
+        // In this way c reaches the leaf node, and everytime before c itself reaches the leaf, pred makes a link for c to return to root
+        // we print c.data and c comes back to root, we print root, then we send c to right, pred has already made a link for c to go back to root
+        List<Integer> result = new ArrayList<>();
+        if(root == null) return result;
+
+        TreeNode c = this.root;
+
+        while(c != null){
+            if(c.leftNode == null){
+                result.add(c.data);
+                c = c.rightNode;
+            }
+            else{
+                TreeNode pred = c.leftNode;  // finding leftNode SubTree ka rightNode most node
+                while(pred.rightNode != null && pred.rightNode != c){
+                    pred = pred.rightNode;
+                }
+
+                if(pred.rightNode == null){ // Creating link from leafnode to root, and then taking c there
+                    pred.rightNode = c;
+                    c = c.leftNode;
+                }
+                else{ // Once c has traversed left node, taking c bac to root, and then right node
+                    pred.rightNode = null;
+                    result.add(c.data);
+                    c = c.rightNode;
+                }
+            }
+        }
+
+        return result;
     }
 
     public String levelOrderTraversal(){
